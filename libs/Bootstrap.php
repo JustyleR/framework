@@ -25,24 +25,14 @@ function Bootstrap() {
 					if (file_exists('controllers/' . $folder . '/' . $page[1] . '.php')) {
 						// Check if the folder is called admin and if it is then check if the user has the admin session defined
 						if ($folder === 'admin') {
-							if (!isset($_SESSION['admin_logged'])) {
-								core_header('home');
-							}
+							if (!isset($_SESSION['admin_logged'])) { core_header('home'); }
 						}
 						checkFile($page, 'controllers/' . $folder . '/' . $page[1] . '.php', 'default_folder');
-					} else {
-						core_header('home');
-					}
-				} else {
-					core_header('home');
-				}
+					} else { core_header('home'); }
+				} else { core_header('home'); }
 			}
-        } else {
-            core_header('home');
-        }
-    } else {
-        core_header('home');
-    }
+        } else { core_header('home'); }
+    } else { core_header('home'); }
 }
 
 // Check the link file content
@@ -94,17 +84,11 @@ function checkFile($page, $dir, $type) {
             if (count(array_unique($array)) === 1) {
 				$conn = connect();
                 main($conn);
-            } else {
-                core_header('home');
-            }
-        } else {
-            core_header('home');
-        }
+            } else { core_header('home'); }
+        } else { core_header('home'); }
     } else {
         if ($page[0] === 'home') {
-            template_error(language('errors', 'HOME_WITHOUT_MAIN_FUNCTION"'), 1);
-        } else {
-            core_header('home');
-        }
+            template_error($conn, language('errors', 'HOME_WITHOUT_MAIN_FUNCTION"'), 1);
+        } else { core_header('home'); }
     }
 }

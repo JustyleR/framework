@@ -8,6 +8,8 @@ if (!defined('file_access')) {
     header('Location: ' . url . ' home');
 }
 
+// Pagination function
+// SQL -> SELECT * FROM news and it will return array with the results and the pages
 function pagination($sql, $limit = 5) {
     $query = query($sql);
     if (num_rows($query) > 0) {
@@ -57,6 +59,7 @@ function pagination($sql, $limit = 5) {
     }
 }
 
+// Redirect to the same page with a valid url
 function printPage($array) {
     $string = '';
 

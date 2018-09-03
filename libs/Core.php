@@ -8,19 +8,6 @@ if (!defined('file_access')) {
     header('Location: ' . url . ' home');
 }
 
-// Check if file exists and if it does it will include it
-function core_file_exists($die = 0, $msg, $filedir) {
-    if (file_exists($filedir)) {
-        require($filedir);
-    } else {
-        if ($die == 0) {
-            template_error($msg);
-        } else {
-            die($msg);
-        }
-    }
-}
-
 // Function to get the url into array
 function core_page() {
     if(isset($_GET['p'])) {
@@ -110,6 +97,7 @@ function core_POSTP($string) {
     return $string;
 }
 
+// Generate a random string with numbers (upper 1/0 = only uppercase letters or no)
 function random($lenght, $upper = 0) {
 	
 	$array = array('q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m',1,2,3,4,5,6,7,8,9,0);
