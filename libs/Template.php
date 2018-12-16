@@ -198,15 +198,13 @@ function template_loop($conn, $content, $loop) {
       }
     }
   }
-  var_dump($array);
+	
   for($i = 0; $i < count($array); $i++) {
     $keys = array_keys($array[$i]);
     $values = array_values($array[$i]);
     $comment = $content;
     
-
     $list		.= str_replace($keys, $values, $comment);
-
   }
 
   return $list;
