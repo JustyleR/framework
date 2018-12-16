@@ -10,8 +10,8 @@ if (!defined('file_access')) {
 
 // Pagination function
 // SQL -> SELECT * FROM news and it will return array with the results and the pages
-function pagination($sql, $limit = 5) {
-    $query = query($sql);
+function pagination($conn, $sql, $limit = 5) {
+    $query = query($conn, $sql);
     if (num_rows($query) > 0) {
         $array = array();
         $page  = array('page' => '', 'link' => '');
@@ -45,7 +45,7 @@ function pagination($sql, $limit = 5) {
 
         $startResult = $cpage * $limit - $limit;
 
-        $query = query($sql . " LIMIT $startResult,$limit");
+        $query = query($conn, $sql . " LIMIT $startResult,$limit");
 
         while ($row = fetch_assoc($query)) {
             $array[] = $row;
