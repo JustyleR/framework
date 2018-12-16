@@ -26,7 +26,7 @@ function template_replace_default($conn, $content) {
 	$content = str_replace('{SITE_TEXT}', language('home', 'SITE_TEXT'), $content);
 
 	// Translate the strings in the template file from the language file
-	$content = template_translate($conn, $content);
+	$content = template_translate($content);
 
 	return $content;
 }
@@ -40,7 +40,7 @@ function template($conn, $file) {
 
 		return $content;
 
-	} else { template_error($conn, language($conn, 'errors', 'FILE_DOESNT_EXISTS') . 'templates/' . template . '/structure/' . $file, 0); }
+	} else { template_error($conn, language('errors', 'FILE_DOESNT_EXISTS') . 'templates/' . template . '/structure/' . $file, 0); }
 }
 
 // Print a error in a custom error page
@@ -52,13 +52,13 @@ function template_error($conn, $msg, $die = 0) {
             $content	= template($conn, 'error');
 			// It will replace the strings with the ones from the language file
 			$replace	= ['{ERROR_SITE_TITLE}', '{ERROR_TEXT_TITLE}', '{ERROR_TEXT}'];
-			$with		= [language($conn, 'errors', 'ERROR_FILE_SITE_TITLE'), language($conn, 'errors', 'ERROR_FILE_TEXT_TITLE'), $msg];
+			$with		= [language('errors', 'ERROR_FILE_SITE_TITLE'), language($conn, 'errors', 'ERROR_FILE_TEXT_TITLE'), $msg];
 			$content 	= str_replace($replace, $with, $content);
 
 			echo $content;
         }
     } else {
-        die(language($conn, 'errors', 'FILE_DOESNT_EXISTS') . 'templates/' . template . '/structure/error.html');
+        die(language('errors', 'FILE_DOESNT_EXISTS') . 'templates/' . template . '/structure/error.html');
     }
 }
 
@@ -94,7 +94,7 @@ function template_require($conn, $scontent) {
 				$require = file_get_contents('templates/'. template .'/structure/'. $template .'.html');
 				$scontent = str_replace('{TEMPLATE_REQUIRE}'. $template .'{/TEMPLATE_REQUIRE}', $require, $scontent);
 
-			} else { template_error($conn, language($conn, 'errors', 'FILE_DOESNT_EXISTS') . 'templates/' . template . '/structure/' . $template, 0); }
+			} else { template_error($conn, language('errors', 'FILE_DOESNT_EXISTS') . 'templates/' . template . '/structure/' . $template, 0); }
 		}
 
 		return $scontent;
