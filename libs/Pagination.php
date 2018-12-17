@@ -51,7 +51,7 @@ function pagination($conn, $sql, $limit = 5) {
             $array[] = $row;
         }
         $prevPage = $cpage - 1;
-        $nextPage = $cpage + 2;
+        $nextPage = $cpage + 1;
         if($prevPage == 0) {
           $prevPage = 1;
         }

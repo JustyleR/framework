@@ -91,8 +91,8 @@ function core_check_logged($type, $status = 0) {
 }
 
 // A function that will get the POST data and prevent any exploits
-function core_POSTP($string) {
-    $string = mysqli_real_escape_string(connect(), $string);
+function core_POSTP($conn, $string) {
+    $string = mysqli_real_escape_string($conn, $string);
     
     return $string;
 }
