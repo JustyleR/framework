@@ -50,8 +50,17 @@ function pagination($conn, $sql, $limit = 5) {
         while ($row = fetch_assoc($query)) {
             $array[] = $row;
         }
+        $prevPage = $cpage - 1;
+        $nextPage = $cpage + 2;
+        if($prevPage == 0) {
+          $prevPage = 1;
+        }
 
-        $pagination = array('prev' => $cpage - 1, 'next' => $cpage + 1, 'max' => $result);
+        if($nextPage > $result) {
+          $nextPage = $result;
+        }
+
+        $pagination = array('prev' => $prevPage, 'next' => $nextPage, 'max' => $result);
 
         return array($pagination, $array);
     } else {
