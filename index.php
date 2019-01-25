@@ -1,9 +1,9 @@
 <?php
 
 /*
- * @project Minecraft Shop
+ * @project Justy a Framework
  * @author  JustyleR
- * @version 0.0.1
+ * @version 0.0.2
  */
 
 // Define the file_access so we can include files
