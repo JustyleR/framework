@@ -1,7 +1,6 @@
 <?php
 /*
 	Pagination Library
-	Custom pagination library to help with the pagination
 */
 
 if (!defined('file_access')) {
@@ -9,7 +8,9 @@ if (!defined('file_access')) {
 }
 
 // Pagination function
-// SQL -> SELECT * FROM news and it will return array with the results and the pages
+// SQL -> SELECT * FROM news ORDER BY new_id
+// It will return array:
+// 0 -> pages , 1 -> query result
 function pagination($conn, $sql, $limit = 5) {
     $query = query($conn, $sql);
     if (num_rows($query) > 0) {
@@ -52,12 +53,12 @@ function pagination($conn, $sql, $limit = 5) {
         }
         $prevPage = $cpage - 1;
         $nextPage = $cpage + 1;
-        if($prevPage == 0) {
-          $prevPage = 1;
+        if ($prevPage == 0) {
+            $prevPage = 1;
         }
 
-        if($nextPage > $result) {
-          $nextPage = $result;
+        if ($nextPage > $result) {
+            $nextPage = $result;
         }
 
         $pagination = array('prev' => $prevPage, 'next' => $nextPage, 'max' => $result);

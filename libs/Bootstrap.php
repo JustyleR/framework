@@ -1,47 +1,56 @@
 <?php
 /*
 	Bootstrap Library
-	The core file for the pages
 */
 
 if (!defined('file_access')) {
     header('Location: ' . url . ' home');
 }
 
-// Check the link file
+// Check the file which is in the url
 function Bootstrap() {
     if (isset($_GET['p'])) {
-		// Get the pages into an array
+        // Get the pages into an array
         $page = explode('/', $_GET['p']);
-		
+
         if (isset($page[0])) {
-			// Check if we can include the file without any folders
-			if (file_exists('controllers/' . $page[0] . '.php')) {
-				checkFile($page, 'controllers/' . $page[0] . '.php', 'default');
-			} else {
-				// Check if we can include the file within a folder
-				$folder = str_replace('!', '', $page[0]);
-				if (isset($page[1])) {
-					if (file_exists('controllers/' . $folder . '/' . $page[1] . '.php')) {
-						// Check if the folder is called admin and if it is then check if the user has the admin session defined
-						if ($folder === 'admin') {
-							if (!isset($_SESSION['admin_logged'])) { core_header('home'); }
-						}
-						checkFile($page, 'controllers/' . $folder . '/' . $page[1] . '.php', 'default_folder');
-					} else { core_header('home'); }
-				} else { core_header('home'); }
-			}
-        } else { core_header('home'); }
-    } else { core_header('home'); }
+            // Check if we can include the file without any folders
+            if (file_exists('controllers/' . $page[0] . '.php')) {
+                checkFile($page, 'controllers/' . $page[0] . '.php', 'default');
+            } else {
+                // Check if we can include the file within a folder
+                $folder = str_replace('!', '', $page[0]);
+                if (isset($page[1])) {
+                    if (file_exists('controllers/' . $folder . '/' . $page[1] . '.php')) {
+                        // Check if the folder is called admin and if it is then check if the user has the admin session defined
+                        if ($folder === 'admin') {
+                            if (!isset($_SESSION['admin_logged'])) {
+                                core_header('home');
+                            }
+                        }
+                        checkFile($page, 'controllers/' . $folder . '/' . $page[1] . '.php', 'default_folder');
+                    } else {
+                        core_header('home');
+                    }
+                } else {
+                    core_header('home');
+                }
+            }
+        } else {
+            core_header('home');
+        }
+    } else {
+        core_header('home');
+    }
 }
 
 // Check the link file content
 function checkFile($page, $dir, $type) {
-	
+
 	// Include the file
     require($dir);
-	
-	// Check if the main function exists
+
+    // Check if the main function exists
     if (function_exists('main_info') && (function_exists('main'))) {
         $main_info = main_info();
         $countp    = count($page);
@@ -50,7 +59,7 @@ function checkFile($page, $dir, $type) {
         }
         $countp = count($page);
         $array  = array();
-		
+
         for ($i = 0; $i < $countp; $i++) {
             if ($main_info[$i] == $page[$i]) {
                 $status = 1;
@@ -82,13 +91,19 @@ function checkFile($page, $dir, $type) {
 
         if (count($page) == (count($main_info))) {
             if (count(array_unique($array)) === 1) {
-				$conn = connect();
+                $conn = connect();
                 main($conn);
-            } else { core_header('home'); }
-        } else { core_header('home'); }
+            } else {
+                core_header('home');
+            }
+        } else {
+            core_header('home');
+        }
     } else {
         if ($page[0] === 'home') {
             template_error($conn, language('errors', 'HOME_WITHOUT_MAIN_FUNCTION"'), 1);
-        } else { core_header('home'); }
+        } else {
+            core_header('home');
+        }
     }
 }

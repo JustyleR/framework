@@ -4,7 +4,9 @@
 	Home page
 */
 
-if (!defined('file_access')) { header('Location: home'); }
+if (!defined('file_access')) {
+    header('Location: home');
+}
 
 // Pages function
 function main_info() {
@@ -13,8 +15,18 @@ function main_info() {
 
 // Main function
 function main($conn) {
-    
-	$content = template($conn, 'home');
-	
-	echo $content;
+    // Load the template
+    $template = template($conn, 'index');
+    // Load the default template variables
+    $vars = template_vars($conn);
+
+    /*
+    * You can do something like
+    * $vars['message'] = 'Message']
+    * And price it in the template file like this:
+    * {{ message }}
+    */
+
+    // Render the template
+    echo $template->render($vars);
 }

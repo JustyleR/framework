@@ -1,7 +1,6 @@
 <?php
 /*
 	Language Library
-	The core file for the language
 */
 
 if (!defined('file_access')) {
@@ -10,21 +9,13 @@ if (!defined('file_access')) {
 
 // Use the language
 function language($name, $string) {
-	$lang = default_language;
-	if(file_exists('language/' . $lang . '/' . $lang . '.ini')) {
-		$ini = parse_ini_file('language/' . $lang . '/' . $lang . '.ini', TRUE);
-		return $ini[$name][$string];
-	} else { template_error($conn, 'The language file doesn\'t exists!<br />
-	<strong>language/' . $lang . '/' . $lang . '.ini</strong>', 1); }
-}
+    $lang = default_language;
+    if (file_exists('language/' . $lang . '/' . $lang . '.ini')) {
+        $ini = parse_ini_file('language/' . $lang . '/' . $lang . '.ini', TRUE);
 
-// Use custom language (in the template folder)
-function clanguage($name, $string) {
-	$lang = default_language;
-	
-    if (file_exists('templates/' . template . '/language/' . $lang . '/' . $lang . '.ini')) {
-        $ini = parse_ini_file('templates/' . template . '/language/' . $lang . '/' . $lang . '.ini', TRUE);
         return $ini[$name][$string];
-    } else { template_error($conn, 'The language file doesn\'t exists!<br />
-	<strong>templates/' . template . '/' . $lang . '.ini</strong>', 1); }
+    } else {
+        template_error($conn, 'The language file doesn\'t exists!<br />
+	<strong>language/' . $lang . '/' . $lang . '.ini</strong>', 1);
+    }
 }
