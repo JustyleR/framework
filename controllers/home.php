@@ -23,7 +23,7 @@ function main($conn) {
     /*
     * You can do something like
     * $vars['message'] = 'Message']
-    * And price it in the template file like this:
+    * And print it in the template file like this:
     * {{ message }}
     */
 
