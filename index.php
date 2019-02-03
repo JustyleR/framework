@@ -18,7 +18,6 @@ require('libs/Language.php');
 require('libs/Pagination.php');
 require('libs/vendor/autoload.php');
 require('libs/Template.php');
-require('libs/Users.php');
 
 // Call the main functions
 Bootstrap();
