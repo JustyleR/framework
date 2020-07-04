@@ -34,7 +34,7 @@ function template_vars($conn) {
     // Adding the Site Template into the $vars
     $vars['SITE_TEMPLATE'] = template;
     // Adding the Site Language into the $vars
-    $vars['SITE_LANGUAGE'] = language();
+    $vars['SITE_LANGUAGE'] = language;
     // Adding the Site URL into the $vars
     $vars['SITE_URL'] = url;
 

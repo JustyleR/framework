@@ -28,37 +28,27 @@ function query($conn, $query) {
 
 // Get the number of rows
 function num_rows($query) {
-    if (mysqli_num_rows($query) > 0) {
-        $return = mysqli_num_rows($query);
-    } else {
-        $return = 0;
-    }
-
-    return $return;
-}
-
-// Fetch assoc
-function fetch_assoc($query) {
-    return mysqli_fetch_assoc($query);
-}
-
-// Fetch array
-function fetch_array($query) {
-    return mysqli_fetch_array($query);
+    return mysqli_num_rows($query);
 }
 
 // Return the result from the query into array
 // so it can be used fast and easy into the template engine
 function db_array($conn, $sql) {
     $query = query($conn, $sql);
-    if (num_rows($query) > 0) {
+    if(num_rows($query) > 0) {
         $array = array();
-        while ($row = fetch_assoc($query)) {
+        while($row = fetch_assoc($query)) {
             $array[] = $row;
         }
 
         return $array;
-    } else {
-        return '';
-    }
+    } else { return FALSE; }
+}
+
+// Return only 1 row from the SQL
+function db_row($conn, $sql) {
+  $query = query($conn, $sql);
+  if(num_rows($query) > 0) {
+    return fetch_assoc($query);
+  } else { return FALSE; }
 }

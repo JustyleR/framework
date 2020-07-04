@@ -15,7 +15,10 @@ function language($name, $string) {
 
         return $ini[$name][$string];
     } else {
-        template_error($conn, 'The language file doesn\'t exists!<br />
-	<strong>language/' . $lang . '/' . $lang . '.ini</strong>', 1);
+        $message = "
+        The Language File Doesn't Exists!<br />
+        <strong>language/". $lang ."/". $lang .".ini</strong>
+        ";
+        template_error($conn, $message, 1);
     }
 }

@@ -36,79 +36,59 @@ function core_message_set($session, $msg) {
 function core_message($msg) {
     if (isset($_SESSION['msg_' . $msg])) {
         $session = explode('<>', $_SESSION['msg_' . $msg]);
-        core_check_message($msg);
+
+        if ($nsession[1] <= core_date('hour')) {
+            unset($_SESSION['msg_' . $session]);
+        }
 
         return $session[0];
     }
 }
 
-// Check if message session is set and if it is then it will unset it
-function core_check_message($session) {
-    if (isset($_SESSION['msg_' . $session])) {
-        $nsession = explode('<>', $_SESSION['msg_' . $session]);
-
-        if ($nsession[1] <= core_date('hour')) {
-            unset($_SESSION['msg_' . $session]);
-        }
-    }
-}
-
 // Get the date
-// (all = day, month, year, hour, seconds) , (day = day, month, year) , (hour = hour, seconds)
+// ($get: all - default[d-m-Y H:i] else use custom) , ($plus: + 1 month, 1 day, 1 hour, 50 seconds and etc)
 function core_date($get = 'all', $plus = 0) {
-    if ($plus == 0) {
-        if ($get === 'date') {
-            $date = date('d-m-Y');
-        } else {
-            if ($get == 'hour') {
-                $date = date('H:i');
-            } else {
-                if ($get == 'all') {
-                    $date = date('d-m-Y H:i');
-                }
-            }
-        }
-    } else {
-        if ($get === 'date') {
-            $date = date('d-m-Y', strtotime($plus));
-        } else {
-            if ($get == 'hour') {
-                $date = date('H:i', strtotime($plus));
-            } else {
-                if ($get == 'all') {
-                    $date = date('d-m-Y H:i', strtotime($plus));
-                }
-            }
-        }
+    switch($get) {
+      case 'all':
+        if($plus) {
+          $date = date('d-m-Y H:i', strtotime($plus));
+        } else { $date = date('d-m-Y H:i'); }
+      break;
+
+      default:
+        if($plus) {
+          $date = date($get, strtotime($plus));
+        } else { $date = date($get); }
+      break;
     }
 
     return $date;
 }
 
-// Check if session isset and redirect
-// logged = check if user is logged and if he is not, then it will redirect him to the home page
-// else it will check if user is logged and if he is then it will redirect him
-function core_check_logged($type, $status = 0) {
-    if ($status == 'logged') {
-        if (!isset($_SESSION[$type . '_logged'])) {
+// Check a session and redirects him
+// ($session: the session name) , ($status: 0/1 check if the session is set or not)
+function core_check_session($session, $status) {
+    if ($status == 1) {
+        if (!isset($_SESSION[$session])) {
             core_header('home');
         }
     } else {
-        if (isset($_SESSION[$type . '_logged'])) {
+        if (isset($_SESSION[$session])) {
             core_header('home');
         }
     }
 }
 
-// A function that will get the POST data and prevent any exploits
+// A function that checks a string for and protects it (mostly for SQL)
 function core_POSTP($conn, $string) {
     $string = mysqli_real_escape_string($conn, $string);
 
     return $string;
 }
 
-// Generate a random string with numbers (upper 1/0 = only uppercase letters or no)
-function random($lenght, $upper = 0) {
+// Generate a random string
+// ($length: what will be the length) , ($upper: Uppercase 0/1)
+function core_random_string($lenght, $upper = 0) {
     $array = array('q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m',1,2,3,4,5,6,7,8,9,0);
 
     $string = '';
