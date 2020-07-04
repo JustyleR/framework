@@ -9,7 +9,7 @@ if (!defined('file_access')) {
 
 // Use the language
 function language($name, $string) {
-    $lang = default_language;
+    $lang = language;
     if (file_exists('language/' . $lang . '/' . $lang . '.ini')) {
         $ini = parse_ini_file('language/' . $lang . '/' . $lang . '.ini', TRUE);
 

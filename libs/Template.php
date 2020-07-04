@@ -9,13 +9,13 @@ if (!defined('file_access')) {
 
 // Load the template
 function template($conn, $template) {
-    $loader = new Twig_Loader_Filesystem('templates/' . default_template);
+    $loader = new Twig_Loader_Filesystem('templates/' . template);
     $twig   = new Twig_Environment($loader, array(
   	'debug' => true
   ));
 
     $translate = new Twig_SimpleFunction('translate', function($cat, $string) {
-        $lang = default_language;
+        $lang = language;
         $ini = parse_ini_file('language/' . $lang . '/' . $lang . '.ini', TRUE);
 
         return $lang = $ini[$cat][$string];
