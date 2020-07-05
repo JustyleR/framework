@@ -20,10 +20,24 @@ function core_page() {
 
 // Function to redirect to a page
 function core_header($location, $time = 0) {
+
+  if(empty($location)) {
+    $pages = core_page();
+    $thePage = '';
+    foreach($pages as $id=>$page) {
+      if($id == 0) {
+        $thePage .= $page;
+      } else {
+        $thePage .= '/' . $page;
+      }
+    }
+    $location = url . $thePage;
+  } else { $location = url; }
+
     if ($time == 0) {
-        header('Location: ' . url . $location);
+        header('Location: ' . $location);
     } else {
-        header('refresh:' . $time . '; url=' . url . $location);
+        header('refresh:' . $time . '; url=' . $location);
     }
 }
 
