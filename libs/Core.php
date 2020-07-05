@@ -32,7 +32,7 @@ function core_header($location, $time = 0) {
       }
     }
     $location = url . $thePage;
-  } else { $location = url; }
+  } else { $location = url . $location; }
 
     if ($time == 0) {
         header('Location: ' . $location);
