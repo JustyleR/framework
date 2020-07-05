@@ -37,7 +37,7 @@ function db_array($conn, $sql) {
     $query = query($conn, $sql);
     if(num_rows($query) > 0) {
         $array = array();
-        while($row = fetch_assoc($query)) {
+        while($row = mysqli_fetch_assoc($query)) {
             $array[] = $row;
         }
 
@@ -49,6 +49,6 @@ function db_array($conn, $sql) {
 function db_row($conn, $sql) {
   $query = query($conn, $sql);
   if(num_rows($query) > 0) {
-    return fetch_assoc($query);
+    return mysqli_fetch_assoc($query);
   } else { return FALSE; }
 }
