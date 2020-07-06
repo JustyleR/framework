@@ -17,6 +17,6 @@ define('db_pass', '');
 define('db_name', '');
 
 // Settings
-define('url', 'http://127.0.0.1/'); // Don't forget to add the / at the end of the link (sitename.com/sms/)
-define('default_template', 'default'); // The template that will be used
-define('default_language', 'en'); // The language that will be used
+define('url', ''); // Don't forget to add the / at the end of the link (sitename.com/sms/)
+define('template', 'default'); // The template that will be used
+define('language', 'en'); // The language that will be used
