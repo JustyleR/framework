@@ -5,7 +5,7 @@
 */
 
 if (!defined('file_access')) {
-    header('Location: ' . url . ' home');
+    header('Location: index');
 }
 
 // Function to get the url into array
@@ -18,9 +18,22 @@ function core_page() {
     }
 }
 
+// Return pages in a string
+function core_page_string($page) {
+  $countP = count($page) - 1;
+  $string = '';
+  for($i = 1; $i <= $countP; $i++) {
+    $backslash = '';
+    if($i < $countP) {
+      $backslash = '/';
+    }
+    $string .= $page[$i] . $backslash;
+  }
+  return $string;
+}
+
 // Function to redirect to a page
 function core_header($location, $time = 0) {
-
   if(empty($location)) {
     $pages = core_page();
     $thePage = '';
@@ -31,14 +44,15 @@ function core_header($location, $time = 0) {
         $thePage .= '/' . $page;
       }
     }
-    $location = url . $thePage;
-  } else { $location = url . $location; }
+    $location = fw_url . $thePage;
+  } else { $location = fw_url . '/' . $location; }
 
     if ($time == 0) {
         header('Location: ' . $location);
     } else {
         header('refresh:' . $time . '; url=' . $location);
     }
+    die();
 }
 
 // Set a message in session so it will be able to be printed in another page
@@ -116,4 +130,16 @@ function core_random_string($lenght, $upper = 0) {
     } else {
         return $string;
     }
+}
+
+// Check if any vars in array is empty
+function core_empty($array) {
+  $status = 1;
+  foreach($array as $row) {
+    if(empty($row)) {
+      $status = 0;
+      break;
+    }
+  }
+  return $status;
 }

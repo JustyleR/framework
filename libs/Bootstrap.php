@@ -4,106 +4,106 @@
 */
 
 if (!defined('file_access')) {
-    header('Location: ' . url . ' home');
+    header('Location: index');
 }
 
 // Check the file which is in the url
 function Bootstrap() {
-    if (isset($_GET['p'])) {
-        // Get the pages into an array
-        $page = explode('/', $_GET['p']);
-
-        if (isset($page[0])) {
-            // Check if we can include the file without any folders
-            if (file_exists('controllers/' . $page[0] . '.php')) {
-                checkFile($page, 'controllers/' . $page[0] . '.php', 'default');
-            } else {
-                // Check if we can include the file within a folder
-                $folder = str_replace('!', '', $page[0]);
-                if (isset($page[1])) {
-                    if (file_exists('controllers/' . $folder . '/' . $page[1] . '.php')) {
-                        // Check if the folder is called admin and if it is then check if the user has the admin session defined
-                        if ($folder === 'admin') {
-                            if (!isset($_SESSION['admin_logged'])) {
-                                core_header('home');
-                            }
-                        }
-                        checkFile($page, 'controllers/' . $folder . '/' . $page[1] . '.php', 'default_folder');
-                    } else {
-                        core_header('home');
-                    }
-                } else {
-                    core_header('home');
-                }
-            }
-        } else {
-            core_header('home');
+  core();
+  $status = 1;
+  if(isset($_GET['p'])) {
+    $page = explode('/', $_GET['p']);
+    $array = array();
+    if(isset($page['0'])) {
+      if($page[0] == '!admin') {
+        if(!isset($_SESSION['admin_logged'])) {
+          core_header('home');
         }
-    } else {
-        core_header('home');
+        $fileDir = 'admin/';
+      } else {
+        $array[0] = '';
+        $fileDir = '';
+      }
+
+      $page     = array_merge($array, $page);
+      $location = 'controllers/';
+      $file     = $location . $fileDir . $page[1] . '.php';
+
+      if(file_exists($file)) {
+
+        require_once($file);
+
+        if(function_exists('main_info') && function_exists('main')) {
+          $main_info[0] = $page[0];
+          $main_info = array_merge($main_info, main_info());
+
+          $countP     = count($page);
+          $countInfo  = count($main_info);
+
+          if($main_info[1] == $page[1] && $countP == $countInfo) {
+            foreach($main_info as $key=>$main) {
+              $p = $page[$key];
+              switch($main) {
+                case '{STRING}':
+                  if(empty($p) || is_numeric($p)) { $status = 0; }
+                break;
+
+                case '{NUMBER}':
+                  if(!is_numeric($p)) { $status = 0; }
+                break;
+
+                case '{EVERYTHING}':
+
+                break;
+
+                default:
+                  if($main != $p) { $status = 0; }
+                break;
+              }
+            }
+
+            // RUN
+            $conn = '';
+            if(!empty(db_host)) { $conn = db_connect(); }
+            main($conn);
+
+          } else { $status = 0; }
+        }
+
+      } else {
+        if($page[1] == 'home') {
+          die(language('errors', 'FILE_DOESNT_EXISTS') . $location . $fileDir . 'home.php');
+        } else { $status = 0; }
+      }
+    } else { $status = 0; }
+  } else { $status = 0; }
+
+  if($status == 0) {
+    $backslash = '';
+    if($page[0] != '') {
+      $backslash = '/';
     }
+    core_header($page[0] . $backslash . 'home');
+  }
 }
 
-// Check the link file content
-function checkFile($page, $dir, $type) {
+function core() {
+  ob_start();
+  session_start();
+  define('fw_url', getURL());
 
-	// Include the file
-    require($dir);
+  if(fw_debug != TRUE) {
+    error_reporting(0);
+  }
+}
 
-    // Check if the main function exists
-    if (function_exists('main_info') && (function_exists('main'))) {
-        $main_info = main_info();
-        $countp    = count($page);
-        if ($type === 'default_folder') {
-            $page = array_slice($page, 1, $countp);
-        }
-        $countp = count($page);
-        $array  = array();
+function getURL() {
+  if(isset($_SERVER['HTTPS'])){
+      $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+  }
+  else{
+      $protocol = 'http';
+  }
 
-        for ($i = 0; $i < $countp; $i++) {
-            if ($main_info[$i] == $page[$i]) {
-                $status = 1;
-            } else {
-                if ($main_info[$i] == '{EVERYTHING}') {
-                    $status = 1;
-                } else {
-                    if ($main_info[$i] == '{NUMBER}') {
-                        if (is_numeric($page[$i])) {
-                            $status = 1;
-                        } else {
-                            $status = 0;
-                        }
-                    } else {
-                        if ($main_info[$i] == '{STRING}') {
-                            if (is_numeric($page[$i])) {
-                                $status = 0;
-                            } else {
-                                $status = 1;
-                            }
-                        } else {
-                            $status = 0;
-                        }
-                    }
-                }
-            }
-            $array[] = $status;
-        }
-
-        if (count($page) == (count($main_info))) {
-            if (count(array_unique($array)) === 1) {
-                $conn = connect();
-                main($conn);
-            } else {
-                core_header('home');
-            }
-        } else {
-            core_header('home');
-        }
-    } else {
-        if ($page[0] === 'home') {
-            template_error($conn, language('errors', 'HOME_WITHOUT_MAIN_FUNCTION"'), 1);
-        } else {
-            core_header('home');
-        }
-    }
+  return $protocol . "://" . $_SERVER['HTTP_HOST'] .dirname($_SERVER['PHP_SELF']);
 }

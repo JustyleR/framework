@@ -4,7 +4,7 @@
 */
 
 if (!defined('file_access')) {
-    header('Location: ' . url . ' home');
+    header('Location: index');
 }
 
 // Pagination function
