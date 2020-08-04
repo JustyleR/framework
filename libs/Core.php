@@ -41,7 +41,7 @@ function core_header($location, $time = 0) {
       if($id == 0) {
         $thePage .= $page;
       } else {
-        $thePage .= '/' . $page;
+        $thePage .= '' . $page;
       }
     }
     $location = fw_url . $thePage;

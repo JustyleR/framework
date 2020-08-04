@@ -79,11 +79,7 @@ function Bootstrap() {
   } else { $status = 0; }
 
   if($status == 0) {
-    $backslash = '';
-    if($page[0] != '') {
-      $backslash = '/';
-    }
-    core_header($page[0] . $backslash . 'home');
+    core_header('home');
   }
 }
 
