@@ -57,16 +57,15 @@ function core_header($location, $time = 0) {
 
 // Set a message in session so it will be able to be printed in another page
 function core_message_set($session, $msg) {
-    $_SESSION['msg_' . $session] = $msg . '<>' . core_date('hour', '1 second');
+    $_SESSION['msg_' . $session] = $msg . '<>' . strtotime('now');
 }
 
 // Print the message and call a function to delete the session which has the message
 function core_message($msg) {
     if (isset($_SESSION['msg_' . $msg])) {
         $session = explode('<>', $_SESSION['msg_' . $msg]);
-
-        if ($nsession[1] <= core_date('hour')) {
-            unset($_SESSION['msg_' . $session]);
+        if ($session[1] <= strtotime('now')) {
+            unset($_SESSION['msg_' . $msg]);
         }
 
         return $session[0];
