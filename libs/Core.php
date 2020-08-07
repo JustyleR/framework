@@ -52,7 +52,6 @@ function core_header($location, $time = 0) {
     } else {
         header('refresh:' . $time . '; url=' . $location);
     }
-    die();
 }
 
 // Set a message in session so it will be able to be printed in another page
