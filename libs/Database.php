@@ -55,13 +55,3 @@ function db_row($conn, $sql) {
     return mysqli_fetch_assoc($query);
   } else { return FALSE; }
 }
-
-// Query function
-function query($conn, $query) {
-    return $conn = mysqli_query($conn, $query);
-}
-
-// Get the number of rows
-function num_rows($query) {
-    return mysqli_num_rows($query);
-}

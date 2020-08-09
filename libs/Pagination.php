@@ -14,8 +14,8 @@ if (!defined('file_access')) {
   // $pages => How much pages to show on the pagination links
 // It will return an array with 2 values (0 => pagination , 1 => sql results)
 function pagination($conn, $sql, $limit = 5, $p_pages = 5) {
-    $query = query($conn, $sql);
-    if (num_rows($query) > 0) {
+    $query = db_query($conn, $sql);
+    if (db_num_rows($query) > 0) {
         $array = array();
         $page  = array('page' => '', 'link' => '');
 
