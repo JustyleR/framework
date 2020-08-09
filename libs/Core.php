@@ -153,12 +153,13 @@ function core_random_string($lenght, $upper = 0) {
     }
 }
 
-// Check if any vars in array is empty
+// Check if any of the arrays is empty
+// Return: 0 = All good | 1 = one or more of the variables is empty
 function core_empty($array) {
-  $status = 1;
+  $status = 0;
   foreach($array as $row) {
     if(empty($row)) {
-      $status = 0;
+      $status = 1;
       break;
     }
   }
