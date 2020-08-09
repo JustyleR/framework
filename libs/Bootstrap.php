@@ -79,27 +79,9 @@ function Bootstrap() {
   } else { $status = 0; }
 
   if($status == 0) {
+    if(core_page()[0] == 'admin' || core_page()[0] == '!admin') {
+      return core_header('!admin/home');
+    }
     core_header('home');
   }
-}
-
-function core() {
-  ob_start();
-  session_start();
-  define('fw_url', getURL());
-
-  if(fw_debug != TRUE) {
-    error_reporting(0);
-  }
-}
-
-function getURL() {
-  if(isset($_SERVER['HTTPS'])){
-      $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-  }
-  else{
-      $protocol = 'http';
-  }
-
-  return $protocol . "://" . $_SERVER['HTTP_HOST'] .dirname($_SERVER['PHP_SELF']);
 }
