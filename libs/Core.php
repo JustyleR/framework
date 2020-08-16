@@ -16,19 +16,21 @@ function core() {
 
   if(fw_debug != TRUE) {
     error_reporting(0);
+  } else {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
   }
 }
 
-// Get the url
 function core_getURL() {
   if(isset($_SERVER['HTTPS'])){
       $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-  }
-  else{
-      $protocol = 'http';
+      $protocol .= "://" . $_SERVER['HTTP_HOST'];
+  } else{
+      $protocol = 'http://'. $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
   }
 
-  return $protocol . "://" . $_SERVER['HTTP_HOST'] .dirname($_SERVER['PHP_SELF']);
+  return $protocol;
 }
 
 // Function to get the url into array
@@ -56,7 +58,7 @@ function core_page_string($page) {
 }
 
 // Function to redirect to a page
-function core_header($location, $time = 0) {
+function core_header($location = '', $time = 0) {
   if(empty($location)) {
     $pages = core_page();
     $thePage = '';
@@ -64,7 +66,7 @@ function core_header($location, $time = 0) {
       if($id == 0) {
         $thePage .= $page;
       } else {
-        $thePage .= '' . $page;
+        $thePage .= '/' . $page;
       }
     }
     $location = fw_url . $thePage;

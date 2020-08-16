@@ -39,7 +39,7 @@ function pagination($conn, $sql, $limit = 5, $p_pages = 5) {
             core_header(printPage($npage));
         }
 
-        $result = ceil(num_rows($query) / $limit);
+        $result = ceil(db_num_rows($query) / $limit);
 
         if ($cpage > $result) {
             $npage[$page['page']] = 1;
@@ -48,9 +48,9 @@ function pagination($conn, $sql, $limit = 5, $p_pages = 5) {
 
         $startResult = $cpage * $limit - $limit;
 
-        $query = query($conn, $sql . " LIMIT $startResult,$limit");
+        $query = db_query($conn, $sql . " LIMIT $startResult,$limit");
 
-        while ($row = fetch_assoc($query)) {
+        while ($row = mysqli_fetch_assoc($query)) {
             $array[] = $row;
         }
         $prevPage = $cpage - 1;
