@@ -69,7 +69,7 @@ function core_header($location = '', $time = 0) {
         $thePage .= '/' . $page;
       }
     }
-    $location = fw_url . $thePage;
+    $location = fw_url . '/' . $thePage;
   } else { $location = fw_url . '/' . $location; }
 
     if ($time == 0) {
