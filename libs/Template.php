@@ -9,17 +9,18 @@ if (!defined('file_access')) {
 
 // Load the template
 function template($conn, $template) {
-  $loader = new Twig_Loader_Filesystem('templates/' . fw_template);
-  $twig   = new Twig_Environment($loader, array(
+  $loader = new \Twig\Loader\FilesystemLoader('templates/' . fw_template);
+  $twig   = new \Twig\Environment($loader, array(
   'debug' => fw_debug
   ));
 
-  $translate = new Twig_SimpleFunction('translate', function($cat, $string) {
+  $translate = new \Twig\TwigFunction('translate', function($cat, $string) {
       $lang = fw_language;
       $ini = parse_ini_file('language/' . $lang . '/' . $lang . '.ini', TRUE);
 
       return $lang = $ini[$cat][$string];
   });
+
   $twig->addFunction($translate);
 
   $template = $twig->load($template . '.html');
